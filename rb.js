@@ -11,7 +11,7 @@ RedBlackTree.prototype.insert = function(key) {
         y = x;
         if (z.key < x.key) {
             x = x.leftChild;
-        else {
+        } else {
             x = x.rightChild;
         }
     }
@@ -73,7 +73,7 @@ RedBlackTree.prototype.type = "rb";
 function RedBlackTreeNode(key, par) {
     this.key = key;
     this.color = "red";
-    this.visual = null;
+    this.visual = {"name": key, children: []};
     this.parent = par;
     this.leftChild = null;
     this.rightChild = null;
