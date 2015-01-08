@@ -21,27 +21,6 @@ function makeTree(type, w, h, canvas) {
    * @param ops, a list of operations 
    */
   function update(ops) {
-
-    function RedBlackOps(type, ops) {
-    }
-  
-    function BSTOps(ops) {
-      for (var i in ops) {
-        switch (ops[i].action) {
-          case "ADD-CHILD":
-            break;
-        }
-      }
-    }
-
-    switch (type) {
-      case "bst":
-        BSTOps(ops);
-        break;
-      case "rb":
-        RedBlackOps(ops);
-        break;
-    }
   }
 
   /* The underlying tree datastructure */
