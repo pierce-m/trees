@@ -9,7 +9,7 @@
 function makeTree(type, w, h, canvas) {
 
   /* Underlying d3 layout tree */
-  var vistree = d3.layout.tree();
+  var vistree = d3.layout.tree().size([w,  h]);
   /* svg on which to append tree nodes */
   var svg = d3.select(canvas)
               .append("svg")
@@ -20,7 +20,38 @@ function makeTree(type, w, h, canvas) {
    * based on the commands supplied in ops.
    * @param ops, a list of operations 
    */
-  function update(ops) {
+  function update(source) {
+    for (var i = 0; i < source.length; i++) {
+      var intermediate = source[i];
+      console.log(intermediate);
+      svg.selectAll("circle")
+         .data(intermediate)
+         .enter().append("circle")
+         .attr("cx", function(d) { return d.cx + w / 2; })
+         .attr("cy", function(d) { return d.cy + 20; })
+         .attr("r", 15)
+         .attr("id", function(d) { return d.key; })
+         .attr("class", "node")
+         .style("stroke", function(d) { return d.color; });
+      svg.selectAll("circle")
+         .attr("cx", function(d) { return d.cx + w / 2; })
+         .attr("cy", function(d) { return d.cy + 20; })
+         .attr("r", 15)
+         .attr("id", function(d) { return d.key; })
+         .attr("class", "node")
+         .style("stroke", function(d) { return d.color; });
+     svg.selectAll("text")
+         .data(intermediate)
+         .enter()
+         .append("text")
+         .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
+         .attr("y", function(d) { return d.cy + 4.5 + 20; })
+         .text(function(d) { return d.key; });
+     svg.selectAll("text")
+         .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
+         .attr("y", function(d) { return d.cy + 4.5 + 20; })
+         .text(function(d) { return d.key; });
+    }
   }
 
   /* The underlying tree datastructure */
