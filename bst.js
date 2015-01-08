@@ -23,10 +23,24 @@ BST.prototype.insert = function(key) {
   } else {
     y.setRightChild(z);
   }
-  return [{action:"ADD-CHILD", child:z}];
+  return [this.jsView(this.root)];
 }
 
 BST.prototype.del = function(key) {
+}
+
+BST.prototype.jsView = function (node) {
+  var c = [];
+  if (node.leftChild) {
+    c.push(this.jsView(node.leftChild));
+  }
+  if (node.rightChild) {
+    c.push(this.jsView(node.rightChild));
+  }
+  return {
+      name: node.key,
+      children: c
+  }
 }
 
 BST.prototype.type = "bst";
@@ -34,22 +48,16 @@ BST.prototype.type = "bst";
 function BSTNode(key, par) {
   this.key = key;
   this.parent = par;
-  this.cx = 0;
-  this.cy = 0;
   this.leftChild = null;
   this.rightChild = null;
 }
 
 BSTNode.prototype.setLeftChild = function (child) {
   this.leftChild = child;
-  child.cx = this.cx - 20;
-  child.cy = this.cy + 20;
 }
 
 BSTNode.prototype.setRightChild = function (child) {
-  this.RightChild = child;
-  child.cx = this.cx + 20;
-  child.cy = this.cy + 20;
+  this.rightChild = child;
 }
 
 BSTNode.prototype.setParent = function (parent) {
