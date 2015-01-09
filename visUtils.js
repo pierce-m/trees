@@ -49,6 +49,7 @@ function nodesAndLinks (node) {
       pairs.push({parent:n, child:n.rightChild});
     }
   }
+  console.log(l);
   return {nodes:l, links:pairs};
 }
 
