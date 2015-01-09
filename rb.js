@@ -45,7 +45,7 @@ RedBlackTree.prototype.contains = function (key) {
 RedBlackTree.prototype.leftRotate = function (node) {
   var y = node.rightChild;
   node.setRightChild(y.leftChild);
-  if (y.leftChild != null) {
+  if (y.leftChild) {
     y.leftChild.setParent(node);
   }
   y.setParent(node.parent);
@@ -61,12 +61,12 @@ RedBlackTree.prototype.leftRotate = function (node) {
 }
 
 RedBlackTree.prototype.rightRotate = function (node) {
-  var y = node.setLeftChild;
+  var y = node.leftChild;
   node.setLeftChild(y.rightChild);
-  if (y.rightChild != null) {
+  if (y.rightChild) {
     y.rightChild.setParent(node);
   }
-  y.parent = node.parent;
+  y.setParent(node.parent);
   if (node.parent == null) {
     this.root = y;
   } else if (node == node.parent.leftChild) {
@@ -74,7 +74,7 @@ RedBlackTree.prototype.rightRotate = function (node) {
   } else {
     node.parent.setRightChild(y);
   }
-  y.setRightChild = node;
+  y.setRightChild(node);
   node.setParent(y);
 }
 
@@ -83,13 +83,13 @@ RedBlackTree.prototype.insertRebalance = function(z) {
   while (z.parent && z.parent.color == "red") {
     if (z.parent.isLeftChild) {
       var y = z.parent.parent.rightChild;
-      if (y.color == "red") {
+      if (y && y.color == "red") {
         z.parent.color = "black";
         z.parent.parent.rightChild.color = "black";
         z.parent.parent.color = "red";
         z = z.parent.parent;
       } else {
-        if (z == z.parent.right) {
+        if (z.parent.right && z.key == z.parent.right.key) {
           z = z.parent;
           this.leftRotate(z);
         }
@@ -99,13 +99,13 @@ RedBlackTree.prototype.insertRebalance = function(z) {
       }
     } else {
       var y = z.parent.parent.leftChild;
-      if (y.color == "red") {
+      if (y && y.color == "red") {
         z.parent.color = "black";
         z.parent.parent.leftChild.color = "black";
         z.parent.parent.color = "red";
         z = z.parent.parent;
       } else {
-        if (z == z.parent.right) {
+        if (z.parent.right && z.key == z.parent.right.key) {
           z = z.parent;
           this.rightRotate(z);
         }
@@ -135,11 +135,16 @@ function RedBlackTreeNode(key) {
 
 RedBlackTreeNode.prototype.setLeftChild = function (child) {
   this.leftChild = child;
-  child.isLeftChild = true;
+  if (child) {
+    child.isLeftChild = true;
+  }
 }
 
 RedBlackTreeNode.prototype.setRightChild = function (child) {
-  this.RightChild = child;
+  this.rightChild = child;
+  if (child) {
+    child.isLeftChild = false;
+  }
 }
 
 RedBlackTreeNode.prototype.setParent = function (parent) {
