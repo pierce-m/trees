@@ -62,7 +62,7 @@ BST.prototype.del = function (key) {
 BST.prototype.transplant = function (u, v) {
   if (u.parent == null) {
     this.root = v;
-  } else if (u.isleftChild) {
+  } else if (u.isLeftChild) {
     u.parent.setLeftChild(v);
   } else {
     u.parent.setRightChild(v);
