@@ -22,66 +22,10 @@ BST.prototype.insert = function (key) {
   } else {
     y.setRightChild(z);
   }
-  return [this.view()];
+  return [view(this)];
 }
 
 BST.prototype.del = function (key) {
-}
-
-/* Assigns a height to each node indicating the height of its
- * tallest subtree plus itself */
-BST.prototype.height = function (node) {
-  if (node == null) {
-    return 0;
-  } else {
-    node.height = 1 + Math.max(this.height(node.leftChild), this.height(node.rightChild));
-    return node.height;
-  }
-}
-
-/* Stores visual information in each node for d3 */
-BST.prototype.visuals = function (node) {
-  if (node.parent) {
-    node.cy = node.parent.cy + 30
-    if (node.isLeftChild) {
-      node.cx = node.parent.cx - Math.pow(2, node.height) * 20
-    } else {
-      node.cx = node.parent.cx + Math.pow(2, node.height) * 20
-    }
-  } else {
-    node.cx = 0;
-    node.cy = 0;
-  }
-  if (node.leftChild) {
-    this.visuals(node.leftChild);
-  }
-  if (node.rightChild) {
-    this.visuals(node.rightChild);
-  }
-}
-
-/* Returns a BFS traversal of the BST */
-BST.prototype.list = function (node) {
-  var q = [node];
-  var l = [node]
-  while (q.length > 0) {
-    var n = q.shift();
-    if (n.leftChild) {
-      l.push(n.leftChild);
-      q.push(n.leftChild);
-    }
-    if (n.rightChild) {
-      l.push(n.rightChild);
-      q.push(n.rightChild);
-    }
-  }
-  return l;
-}
-
-BST.prototype.view = function () {
-  this.height(this.root);
-  this.visuals(this.root)
-  return this.list(this.root);
 }
 
 BST.prototype.type = "bst";

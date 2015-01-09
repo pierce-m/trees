@@ -23,34 +23,41 @@ function makeTree(type, w, h, canvas) {
   function update(source) {
     for (var i = 0; i < source.length; i++) {
       var intermediate = source[i];
-      console.log(intermediate);
-      svg.selectAll("circle")
-         .data(intermediate)
-         .enter().append("circle")
-         .attr("cx", function(d) { return d.cx + w / 2; })
-         .attr("cy", function(d) { return d.cy + 20; })
-         .attr("r", 15)
-         .attr("id", function(d) { return d.key; })
-         .attr("class", "node")
-         .style("stroke", function(d) { return d.color; });
-      svg.selectAll("circle")
-         .attr("cx", function(d) { return d.cx + w / 2; })
-         .attr("cy", function(d) { return d.cy + 20; })
-         .attr("r", 15)
-         .attr("id", function(d) { return d.key; })
-         .attr("class", "node")
-         .style("stroke", function(d) { return d.color; });
-     svg.selectAll("text")
-         .data(intermediate)
-         .enter()
-         .append("text")
-         .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
-         .attr("y", function(d) { return d.cy + 4.5 + 20; })
-         .text(function(d) { return d.key; });
-     svg.selectAll("text")
-         .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
-         .attr("y", function(d) { return d.cy + 4.5 + 20; })
-         .text(function(d) { return d.key; });
+      var newNodes = svg.selectAll("circle").data(intermediate.nodes);
+      var newLinks = svg.selectAll("line").data(intermediate.links);
+      var newText = svg.selectAll("text").data(intermediate.nodes);
+
+      newNodes.transition()
+              .attr("cx", function(d) { return d.cx + w / 2; })
+              .attr("cy", function(d) { return d.cy + 20; });
+      newNodes.enter().append("circle")
+              .attr("cx", function(d) { return d.cx + w / 2; })
+              .attr("cy", function(d) { return d.cy + 20; })
+              .attr("r", 15)
+              .attr("id", function(d) { return d.key; })
+              .attr("class", "node")
+              .style("stroke", function(d) { return d.color; });
+
+      newLinks.transition()
+              .attr("x1", function(d) { return d.parent.cx + w / 2; })
+              .attr("x2", function(d) { return d.child.cx + w / 2; })
+              .attr("y1", function(d) { return d.parent.cy + 20; })
+              .attr("y2", function(d) { return d.child.cy + 20; });
+      newLinks.enter().append("line")
+                      .attr("x1", function(d) { return d.parent.cx + w / 2; })
+                      .attr("x2", function(d) { return d.child.cx + w / 2; })
+                      .attr("y1", function(d) { return d.parent.cy + 20; })
+                      .attr("y2", function(d) { return d.child.cy + 20; })
+                      .style("stroke", "black");
+
+      newText.transition()
+             .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
+             .attr("y", function(d) { return d.cy + 4.5 + 20; })
+             .text(function(d) { return d.key; });
+      newText.enter().append("text")
+                     .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
+                     .attr("y", function(d) { return d.cy + 4.5 + 20; })
+                     .text(function(d) { return d.key; });
     }
   }
 
