@@ -1,5 +1,3 @@
-/* Assigns a height to each node indicating the height of its
- * tallest subtree plus itself */
 function height (node) {
   if (node == null) {
     return 0;
@@ -9,7 +7,6 @@ function height (node) {
   }
 }
 
-/* Stores visual information in each node for d3 */
 function visuals (node) {
   if (node.parent) {
     node.cy = node.parent.cy + 55
@@ -30,33 +27,41 @@ function visuals (node) {
   }
 }
 
-/* Returns an array containing a topoligical sorting of the
- * BST and a list of parent-child pairs */
 function nodesAndLinks (node) {
-  var q = [node];
-  var l = [node];
+  var n = new visNode(node);
+  var q = [n];
+  var l = [n];
   var pairs = []
   while (q.length > 0) {
-    var n = q.shift();
+    n = q.shift();
     if (n.leftChild) {
-      l.push(n.leftChild);
-      q.push(n.leftChild);
-      pairs.push({parent:n, child:n.leftChild});
+      var vcl = new visNode(n.leftChild);
+      l.push(vcl);
+      q.push(vcl);
+      pairs.push({parent:n, child:vcl});
     }
     if (n.rightChild) {
-      l.push(n.rightChild);
-      q.push(n.rightChild);
-      pairs.push({parent:n, child:n.rightChild});
+      var vcr = new visNode(n.rightChild);
+      l.push(vcr);
+      q.push(vcr);
+      pairs.push({parent:n, child:vcr});
     }
   }
-  console.log(l);
   return {nodes:l, links:pairs};
 }
 
-/* Assigns height and visual info for a tree, returns an object containing
- * the nodes and links of the tree. */
 function view (tree) {
   height(tree.root);
   visuals(tree.root)
   return nodesAndLinks(tree.root);
+}
+
+function visNode (node) {
+  this.cx = node.cx;
+  this.cy = node.cy;
+  this.leftChild = node.leftChild;
+  this.rightChild = node.rightChild;
+  this.parent = node.parent;
+  this.color = node.color;
+  this.key = node.key;
 }
