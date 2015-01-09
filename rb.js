@@ -14,7 +14,7 @@ RedBlackTree.prototype.insert = function(key) {
       x = x.rightChild;
     }
   }
-  z.parent = y;
+  z.setParent(y);
   if (y == null) {
     this.root = z;
   } else if (z.key < y.key) {
@@ -22,10 +22,24 @@ RedBlackTree.prototype.insert = function(key) {
   } else {
     y.setRightChild(z);
   }
-  return view(this.root);
+  return this.insertRebalance(z);
 }
 
 RedBlackTree.prototype.del = function(key) {
+}
+
+RedBlackTree.prototype.contains = function (key) {
+  var x = this.root;
+  while (x != null) {
+    if (x.key < key) {
+      x = x.rightChild;
+    } else if (x.key > key) {
+      x = x.leftChild;
+    } else {
+      return true;
+    }
+  }
+  return false;
 }
 
 RedBlackTree.prototype.leftRotate = function (node) {
@@ -64,7 +78,47 @@ RedBlackTree.prototype.rightRotate = function (node) {
   node.setParent(y);
 }
 
-RedBlackTree.prototype.rebalance = function(node) {
+RedBlackTree.prototype.insertRebalance = function(z) {
+  var snapshots = [view(this)];
+  while (z.parent && z.parent.color == "red") {
+    if (z.parent.isLeftChild) {
+      var y = z.parent.parent.rightChild;
+      if (y.color == "red") {
+        z.parent.color = "black";
+        z.parent.parent.rightChild.color = "black";
+        z.parent.parent.color = "red";
+        z = z.parent.parent;
+      } else {
+        if (z == z.parent.right) {
+          z = z.parent;
+          this.leftRotate(z);
+        }
+        z.parent.color = "black";
+        z.parent.parent.color = "red";
+        this.rightRotate(z.parent.parent);
+      }
+    } else {
+      var y = z.parent.parent.leftChild;
+      if (y.color == "red") {
+        z.parent.color = "black";
+        z.parent.parent.leftChild.color = "black";
+        z.parent.parent.color = "red";
+        z = z.parent.parent;
+      } else {
+        if (z == z.parent.right) {
+          z = z.parent;
+          this.rightRotate(z);
+        }
+        z.parent.color = "black";
+        z.parent.parent.color = "red";
+        this.leftRotate(z.parent.parent);
+      }
+    }
+    snapshots.push(view(this));
+  }
+  this.root.color = "black";
+  snapshots.push(view(this));
+  return snapshots;
 }
 
 RedBlackTree.prototype.type = "rb";

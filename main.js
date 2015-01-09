@@ -22,9 +22,10 @@ function makeTree(type, w, h, canvas) {
       var newText = svg.selectAll("text").data(intermediate.nodes);
 
       newNodes.exit().remove();
-      newNodes.transition()
+      newNodes.transition().delay(1000)
               .attr("cx", function(d) { return d.cx + w / 2; })
-              .attr("cy", function(d) { return d.cy + 20; });
+              .attr("cy", function(d) { return d.cy + 20; })
+              .style("stroke", function(d) { return d.color; });
       newNodes.enter().append("circle")
               .attr("cx", function(d) { return d.cx + w / 2; })
               .attr("cy", function(d) { return d.cy + 20; })
