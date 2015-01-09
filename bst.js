@@ -47,7 +47,7 @@ BST.prototype.del = function (key) {
     }
     if (z != x.rightChild) {
       this.transplant(z, z.rightChild);
-      z.setRightChild(x.right)
+      z.setRightChild(x.rightChild)
       x.rightChild.setParent(z);
     }
     this.transplant(x, z);
@@ -107,6 +107,9 @@ BSTNode.prototype.setLeftChild = function (child) {
 
 BSTNode.prototype.setRightChild = function (child) {
   this.rightChild = child;
+  if (child) {
+    child.isLeftChild = false;
+  }
 }
 
 BSTNode.prototype.setParent = function (parent) {
