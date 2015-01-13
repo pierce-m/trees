@@ -1,12 +1,16 @@
+var NIL = new RedBlackTreeNode();
+NIL.nil = true;
+NIL.color = "black";
+
 function RedBlackTree(selection) {
-  this.root = null;
+  this.root = NIL;
 }
 
 RedBlackTree.prototype.insert = function(key) {
   var z = new RedBlackTreeNode(key);
-  var y = null;
+  var y = NIL;
   var x = this.root;
-  while (x != null) {
+  while (x != NIL) {
     y = x;
     if (z.key < x.key) {
       x = x.leftChild;
@@ -15,7 +19,7 @@ RedBlackTree.prototype.insert = function(key) {
     }
   }
   z.setParent(y);
-  if (y == null) {
+  if (y == NIL) {
     this.root = z;
   } else if (z.key < y.key) {
     y.setLeftChild(z);
@@ -30,7 +34,7 @@ RedBlackTree.prototype.del = function(key) {
 
 RedBlackTree.prototype.contains = function (key) {
   var x = this.root;
-  while (x != null) {
+  while (x != NIL) {
     if (x.key < key) {
       x = x.rightChild;
     } else if (x.key > key) {
@@ -49,7 +53,7 @@ RedBlackTree.prototype.leftRotate = function (node) {
     y.leftChild.setParent(node);
   }
   y.setParent(node.parent);
-  if (node.parent == null) {
+  if (node.parent == NIL) {
     this.root = y;
   } else if (node == node.parent.leftChild) {
     node.parent.setLeftChild(y);
@@ -67,7 +71,7 @@ RedBlackTree.prototype.rightRotate = function (node) {
     y.rightChild.setParent(node);
   }
   y.setParent(node.parent);
-  if (node.parent == null) {
+  if (node.parent == NIL) {
     this.root = y;
   } else if (node == node.parent.leftChild) {
     node.parent.setLeftChild(y);
@@ -80,16 +84,16 @@ RedBlackTree.prototype.rightRotate = function (node) {
 
 RedBlackTree.prototype.insertRebalance = function(z) {
   var snapshots = [view(this)];
-  while (z.parent && z.parent.color == "red") {
+  while (z.parent.color == "red") {
     if (z.parent.isLeftChild) {
       var y = z.parent.parent.rightChild;
-      if (y && y.color == "red") {
+      if (y.color == "red") {
         z.parent.color = "black";
         z.parent.parent.rightChild.color = "black";
         z.parent.parent.color = "red";
         z = z.parent.parent;
       } else {
-        if (z.parent.right && z.key == z.parent.right.key) {
+        if (z.key == z.parent.rightChild.key) {
           z = z.parent;
           this.leftRotate(z);
         }
@@ -99,19 +103,20 @@ RedBlackTree.prototype.insertRebalance = function(z) {
       }
     } else {
       var y = z.parent.parent.leftChild;
-      if (y && y.color == "red") {
+      if (y.color == "red") {
         z.parent.color = "black";
         z.parent.parent.leftChild.color = "black";
         z.parent.parent.color = "red";
         z = z.parent.parent;
       } else {
-        if (z.parent.right && z.key == z.parent.right.key) {
+        if (z.key == z.parent.rightChild.key) {
           z = z.parent;
-          this.rightRotate(z);
+          this.leftRotate(z);
+          snapshots.push(view(this));
         }
         z.parent.color = "black";
         z.parent.parent.color = "red";
-        this.leftRotate(z.parent.parent);
+        this.rightRotate(z.parent.parent);
       }
     }
     snapshots.push(view(this));
@@ -126,10 +131,10 @@ RedBlackTree.prototype.type = "rb";
 function RedBlackTreeNode(key) {
   this.key = key;
   this.depth = null;
-  this.parent = null;
+  this.parent = NIL;
   this.color = "red";
-  this.leftChild = null;
-  this.rightChild = null;
+  this.leftChild = NIL;
+  this.rightChild = NIL;
   this.isLeftChild = false;
 }
 
@@ -149,5 +154,5 @@ RedBlackTreeNode.prototype.setRightChild = function (child) {
 
 RedBlackTreeNode.prototype.setParent = function (parent) {
   this.parent = parent;
-  this.depth = parent ? parent.depth + 1: 0;
+  this.depth = !parent.nil ? parent.depth + 1: 0;
 }
