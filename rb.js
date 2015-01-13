@@ -49,13 +49,13 @@ RedBlackTree.prototype.contains = function (key) {
 RedBlackTree.prototype.leftRotate = function (node) {
   var y = node.rightChild;
   node.setRightChild(y.leftChild);
-  if (y.leftChild) {
+  if (y.leftChild != NIL) {
     y.leftChild.setParent(node);
   }
   y.setParent(node.parent);
   if (node.parent == NIL) {
     this.root = y;
-  } else if (node == node.parent.leftChild) {
+  } else if (node.isLeftChild) {
     node.parent.setLeftChild(y);
   } else {
     node.parent.setRightChild(y);
@@ -67,13 +67,13 @@ RedBlackTree.prototype.leftRotate = function (node) {
 RedBlackTree.prototype.rightRotate = function (node) {
   var y = node.leftChild;
   node.setLeftChild(y.rightChild);
-  if (y.rightChild) {
+  if (y.rightChild != NIL) {
     y.rightChild.setParent(node);
   }
   y.setParent(node.parent);
   if (node.parent == NIL) {
     this.root = y;
-  } else if (node == node.parent.leftChild) {
+  } else if (node.isLeftChild) {
     node.parent.setLeftChild(y);
   } else {
     node.parent.setRightChild(y);
@@ -96,6 +96,7 @@ RedBlackTree.prototype.insertRebalance = function(z) {
         if (z.key == z.parent.rightChild.key) {
           z = z.parent;
           this.leftRotate(z);
+          snapshots.push(view(this));
         }
         z.parent.color = "black";
         z.parent.parent.color = "red";
@@ -109,14 +110,14 @@ RedBlackTree.prototype.insertRebalance = function(z) {
         z.parent.parent.color = "red";
         z = z.parent.parent;
       } else {
-        if (z.key == z.parent.rightChild.key) {
+        if (z.key == z.parent.leftChild.key) {
           z = z.parent;
-          this.leftRotate(z);
+          this.rightRotate(z);
           snapshots.push(view(this));
         }
         z.parent.color = "black";
         z.parent.parent.color = "red";
-        this.rightRotate(z.parent.parent);
+        this.leftRotate(z.parent.parent);
       }
     }
     snapshots.push(view(this));
@@ -140,14 +141,14 @@ function RedBlackTreeNode(key) {
 
 RedBlackTreeNode.prototype.setLeftChild = function (child) {
   this.leftChild = child;
-  if (child) {
+  if (child && !child.nil) {
     child.isLeftChild = true;
   }
 }
 
 RedBlackTreeNode.prototype.setRightChild = function (child) {
   this.rightChild = child;
-  if (child) {
+  if (child && !child.nil) {
     child.isLeftChild = false;
   }
 }
