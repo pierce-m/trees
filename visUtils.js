@@ -1,14 +1,14 @@
 function height (node) {
-  if (node == null) {
+  if (node == null || node.nil) {
     return 0;
   } else {
-    node.height = 1 + Math.max(this.height(node.leftChild), this.height(node.rightChild));
+    node.height = 1 + Math.max(height(node.leftChild), height(node.rightChild));
     return node.height;
   }
 }
 
 function visuals (node) {
-  if (node.parent) {
+  if (node.parent && !node.parent.nil) {
     node.cy = node.parent.cy + 55
     if (node.isLeftChild) {
       node.cx = node.parent.cx - Math.pow(2, node.height) * 10
@@ -19,10 +19,10 @@ function visuals (node) {
     node.cx = 0;
     node.cy = 0;
   }
-  if (node.leftChild) {
+  if (node.leftChild && !node.leftChild.nil) {
     visuals(node.leftChild);
   }
-  if (node.rightChild) {
+  if (node.rightChild && !node.rightChild.nil) {
     visuals(node.rightChild);
   }
 }
@@ -34,13 +34,13 @@ function nodesAndLinks (node) {
   var pairs = []
   while (q.length > 0) {
     n = q.shift();
-    if (n.leftChild) {
+    if (n.leftChild && !n.leftChild.nil) {
       var vcl = new visNode(n.leftChild);
       l.push(vcl);
       q.push(vcl);
       pairs.push({parent:n, child:vcl});
     }
-    if (n.rightChild) {
+    if (n.rightChild && !n.rightChild.nil) {
       var vcr = new visNode(n.rightChild);
       l.push(vcr);
       q.push(vcr);
