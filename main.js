@@ -22,7 +22,7 @@ function makeTree(type, w, h, canvas) {
       var newText = svg.selectAll("text").data(intermediate.nodes);
 
       newNodes.exit().remove();
-      newNodes.transition().delay(i ? 1000 : 0)
+      newNodes.transition().delay(i ? i * 1000 : 0)
               .attr("cx", function(d) { return d.cx + w / 2; })
               .attr("cy", function(d) { return d.cy + 20; })
               .style("stroke", function(d) { return d.color; });
@@ -35,7 +35,7 @@ function makeTree(type, w, h, canvas) {
               .style("stroke", function(d) { return d.color; });
 
       newLinks.exit().remove();
-      newLinks.transition().delay(i ? 1000 : 0)
+      newLinks.transition().delay(i ? i * 1000 : 0)
               .attr("x1", function(d) { return d.parent.cx + w / 2; })
               .attr("x2", function(d) { return d.child.cx + w / 2; })
               .attr("y1", function(d) { return d.parent.cy + 20; })
@@ -48,7 +48,7 @@ function makeTree(type, w, h, canvas) {
                       .style("stroke", "black");
 
       newText.exit().remove();
-      newText.transition().delay(i ? 1000 : 0)
+      newText.transition().delay(i ? i * 1000 : 0)
              .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
              .attr("y", function(d) { return d.cy + 4.5 + 20; })
              .text(function(d) { return d.key; });
@@ -56,6 +56,7 @@ function makeTree(type, w, h, canvas) {
                      .attr("x", function(d) { return d.cx - 4.5 + w / 2; })
                      .attr("y", function(d) { return d.cy + 4.5 + 20; })
                      .text(function(d) { return d.key; });
+
     }
   }
 
