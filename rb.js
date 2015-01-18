@@ -1,7 +1,3 @@
-var NIL = new RedBlackTreeNode();
-NIL.nil = true;
-NIL.color = "black";
-
 function RedBlackTree(selection) {
   this.root = NIL;
 }
@@ -30,6 +26,63 @@ RedBlackTree.prototype.insert = function(key) {
 }
 
 RedBlackTree.prototype.del = function(key) {
+  var z = this.root;
+  while (z != NIL && key != z.key) {
+    if (key < z.key) {
+      z = z.leftChild;
+    } else if (key > z.key) {
+      z = z.rightChild;
+    } else {
+      break;
+    }
+  }
+  var y = z;
+  var yc = y.color;
+  var x;
+  if (z.leftChild == NIL) {
+    x = z.rightChild;
+    this.transplant(z, z.rightChild);
+  } else if (z.rightChild == NIL) {
+    x = z.leftChild;
+    this.transplant(z, z.leftChild);
+  } else {
+    y = z.rightChild;
+    var minnode = y;
+    while (y.leftChild != NIL) {
+      minnode = y;
+      y = y.leftChild;
+    }
+    y = minnode;
+    yc = y.color;
+    x = y.rightChild;
+    if (y.parent == z) {
+      x.setParent(y);
+    } else {
+      this.transplant(y, y.rightChild);
+      y.setRightChild(z.rightChild);
+      y.rightChild.setParent(y);
+    }
+    this.transplant(z, y);
+    y.setLeftChild(z.leftChild);
+    y.leftChild.setParent(y);
+    y.color = z.color;
+  }
+  if (yc == "black") {
+    return this.deleteRebalance(x);
+  } else {
+    return [view(this)];
+  }
+}
+
+RedBlackTree.prototype.transplant = function (u, v) {
+  if (u.parent == NIL) {
+    this.root = v;
+  } else if (u.isLeftChild) {
+    u.parent.setLeftChild(v);
+  } else {
+    u.parent.setRightChild(v);
+  }
+  v.setParent(u.parent);
 }
 
 RedBlackTree.prototype.contains = function (key) {
@@ -127,6 +180,70 @@ RedBlackTree.prototype.insertRebalance = function(z) {
   return snapshots;
 }
 
+RedBlackTree.prototype.deleteRebalance = function(x) {
+  var snapshots = [view(this)];
+  while (x != this.root && x.color == "black") {
+    if (x.isLeftChild) {
+      var w = x.parent.rightChild;
+      if (w.color == "red") {
+        w.color = "black";
+        x.parent.color = "red";
+        this.leftRotate(x.parent);
+        snapshots.push(view(this));
+        w = x.rightChild;
+      }
+      if (w.leftChild.color == "black" && w.rightChild.color == "black") {
+        w.color = "red";
+        x = x.parent;
+      } else {
+        if (w.rightChild.color == "black") {
+          w.leftChild.color = "black";
+          w.color = "red";
+          this.rightRotate(w);
+          w = x.parent.rightChild;
+          snapshots.push(view(this));
+        }
+        w.color = x.parent.color;
+        x.parent.color = "black";
+        this.leftRotate(x.parent);
+        x = this.root;
+        snapshots.push(view(this));
+      }
+    } else {
+      var w = x.parent.leftChild;
+      if (w.color == "red") {
+        w.color = "black";
+        x.parent.color = "red";
+        this.rightRotate(x.parent);
+        w = x.leftChild;
+        snapshots.push(view(this));
+      }
+      if (w.rightChild.color == "black" && w.leftChild.color == "black") {
+        w.color = "red";
+        x = x.parent;
+      } else {
+        if (w.leftChild.color == "black") {
+          w.rightChild.color = "black";
+          w.color = "red";
+          this.leftRotate(w);
+          w = x.parent.leftChild;
+          snapshots.push(view(this));
+        }
+        w.color = x.parent.color;
+        x.parent.color = "black";
+        this.rightRotate(x.parent);
+        x = this.root;
+        snapshots.push(view(this));
+      }
+    }
+  }
+  x.color = "black";
+  snapshots.push(view(this));
+  return snapshots;
+}
+
+
+
 RedBlackTree.prototype.type = "rb";
 
 function RedBlackTreeNode(key) {
@@ -138,6 +255,10 @@ function RedBlackTreeNode(key) {
   this.rightChild = NIL;
   this.isLeftChild = false;
 }
+
+var NIL = new RedBlackTreeNode();
+NIL.nil = true;
+NIL.color = "black";
 
 RedBlackTreeNode.prototype.setLeftChild = function (child) {
   this.leftChild = child;
