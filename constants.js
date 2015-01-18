@@ -2,13 +2,13 @@
 var RADIUS = 30;
 
 /* The verticle offset of all nodes within the svg */
-var VERT_OFFSET = RADIUS + 5;
+var VERT_OFFSET = RADIUS + 10;
 
 /* Offset between node and its parent/child */
 var VERT_SPACE = RADIUS + 40;
 
 /* Controls how 'bunched up' children of a node are */
-var NODE_SPACING = RADIUS - 5;
+var NODE_SPACING = RADIUS - 10;
 
 /* Offset of text inside svg circle. */
 var TEXT_OFFSET = 4.5;
