@@ -9,7 +9,7 @@ function height (node) {
 
 function visuals (node) {
   if (node.parent && !node.parent.nil) {
-    node.cy = node.parent.cy + 55
+    node.cy = node.parent.cy + VERT_SPACE;
     if (node.isLeftChild) {
       node.cx = node.parent.cx - Math.pow(2, node.height) * NODE_SPACING;
     } else {

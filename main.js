@@ -13,12 +13,12 @@ function makeTree(type, w, h, canvas) {
       newNodes.exit().remove();
       newNodes.transition().delay(i * TRANSITION_SPEED)
               .attr("cx", function(d) { return d.cx + w / 2; })
-              .attr("cy", function(d) { return d.cy + VERT_SPACE; })
+              .attr("cy", function(d) { return d.cy + VERT_OFFSET; })
               .style("stroke", function(d) { return d.color; });
       newNodes.enter().append("circle")
               .attr("cx", function(d) { return d.cx + w / 2; })
-              .attr("cy", function(d) { return d.cy + VERT_SPACE; })
-              .attr("r", 15)
+              .attr("cy", function(d) { return d.cy + VERT_OFFSET; })
+              .attr("r", RADIUS)
               .attr("id", function(d) { return d.key; })
               .attr("class", "node")
               .style("stroke", function(d) { return d.color; });
@@ -27,23 +27,23 @@ function makeTree(type, w, h, canvas) {
       newLinks.transition().delay(i * TRANSITION_SPEED)
               .attr("x1", function(d) { return d.parent.cx + w / 2; })
               .attr("x2", function(d) { return d.child.cx + w / 2; })
-              .attr("y1", function(d) { return d.parent.cy + VERT_SPACE; })
-              .attr("y2", function(d) { return d.child.cy + VERT_SPACE; });
+              .attr("y1", function(d) { return d.parent.cy + VERT_OFFSET; })
+              .attr("y2", function(d) { return d.child.cy + VERT_OFFSET; });
       newLinks.enter().append("line")
                       .attr("x1", function(d) { return d.parent.cx + w / 2; })
                       .attr("x2", function(d) { return d.child.cx + w / 2; })
-                      .attr("y1", function(d) { return d.parent.cy + VERT_SPACE; })
-                      .attr("y2", function(d) { return d.child.cy + VERT_SPACE; })
+                      .attr("y1", function(d) { return d.parent.cy + VERT_OFFSET; })
+                      .attr("y2", function(d) { return d.child.cy + VERT_OFFSET; })
                       .style("stroke", "black");
 
       newText.exit().remove();
       newText.transition().delay(i * TRANSITION_SPEED)
              .attr("x", function(d) { return d.cx - TEXT_OFFSET + w / 2; })
-             .attr("y", function(d) { return d.cy + TEXT_OFFSET + VERT_SPACE; })
+             .attr("y", function(d) { return d.cy + TEXT_OFFSET + VERT_OFFSET; })
              .text(function(d) { return d.key; });
       newText.enter().append("text")
                      .attr("x", function(d) { return d.cx - TEXT_OFFSET + w / 2; })
-                     .attr("y", function(d) { return d.cy + TEXT_OFFSET + VERT_SPACE; })
+                     .attr("y", function(d) { return d.cy + TEXT_OFFSET + VERT_OFFSET; })
                      .text(function(d) { return d.key; });
 
     }
