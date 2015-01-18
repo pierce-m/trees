@@ -194,6 +194,7 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
       }
       if (w.leftChild.color == "black" && w.rightChild.color == "black") {
         w.color = "red";
+        snapshots.push(view(this));
         x = x.parent;
       } else {
         if (w.rightChild.color == "black") {
