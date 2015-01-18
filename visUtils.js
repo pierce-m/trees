@@ -11,9 +11,9 @@ function visuals (node) {
   if (node.parent && !node.parent.nil) {
     node.cy = node.parent.cy + 55
     if (node.isLeftChild) {
-      node.cx = node.parent.cx - Math.pow(2, node.height) * 10
+      node.cx = node.parent.cx - Math.pow(2, node.height) * NODE_SPACING;
     } else {
-      node.cx = node.parent.cx + Math.pow(2, node.height) * 10
+      node.cx = node.parent.cx + Math.pow(2, node.height) * NODE_SPACING;
     }
   } else {
     node.cx = 0;

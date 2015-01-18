@@ -57,8 +57,6 @@ BST.prototype.del = function (key) {
   return [view(this)];
 }
 
-/* Helper function for deletion, taken from
- * Cormen's Intro to Alg. */
 BST.prototype.transplant = function (u, v) {
   if (u.parent == null) {
     this.root = v;
