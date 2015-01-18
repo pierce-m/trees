@@ -28,6 +28,9 @@ function visuals (node) {
 }
 
 function nodesAndLinks (node) {
+  if (!node || node.nil) {
+    return {nodes: [], links: []};
+  }
   var n = new visNode(node);
   var q = [n];
   var l = [n];
@@ -51,8 +54,10 @@ function nodesAndLinks (node) {
 }
 
 function view (tree) {
-  height(tree.root);
-  visuals(tree.root)
+  if (tree.root && !tree.root.ni) {
+    height(tree.root);
+    visuals(tree.root)
+  }
   return nodesAndLinks(tree.root);
 }
 
