@@ -189,13 +189,13 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
         w.color = "black";
         x.parent.color = "red";
         this.leftRotate(x.parent);
+        w = x.parent.rightChild;
         snapshots.push(view(this));
-        w = x.rightChild;
       }
       if (w.leftChild.color == "black" && w.rightChild.color == "black") {
         w.color = "red";
-        snapshots.push(view(this));
         x = x.parent;
+        snapshots.push(view(this));
       } else {
         if (w.rightChild.color == "black") {
           w.leftChild.color = "black";
@@ -206,6 +206,7 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
         }
         w.color = x.parent.color;
         x.parent.color = "black";
+        w.rightChild.color = "black";
         this.leftRotate(x.parent);
         x = this.root;
         snapshots.push(view(this));
@@ -216,7 +217,7 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
         w.color = "black";
         x.parent.color = "red";
         this.rightRotate(x.parent);
-        w = x.leftChild;
+        w = x.parent.leftChild;
         snapshots.push(view(this));
       }
       if (w.rightChild.color == "black" && w.leftChild.color == "black") {
@@ -232,6 +233,7 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
         }
         w.color = x.parent.color;
         x.parent.color = "black";
+        w.leftChild.color = "black";
         this.rightRotate(x.parent);
         x = this.root;
         snapshots.push(view(this));
