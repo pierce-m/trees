@@ -1,4 +1,6 @@
-function BST () {
+import { view } from './visUtils.js'
+
+export function BST () {
   this.root = null;
 }
 

@@ -1,3 +1,5 @@
+import { VERT_SPACE, NODE_SPACING } from './constants.js'
+
 function height (node) {
   if (node == null || node.nil) {
     return 0;
@@ -53,7 +55,7 @@ function nodesAndLinks (node) {
   return {nodes:l, links:pairs};
 }
 
-function view (tree) {
+export function view (tree) {
   if (tree.root && !tree.root.ni) {
     height(tree.root);
     visuals(tree.root)

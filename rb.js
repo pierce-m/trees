@@ -1,4 +1,6 @@
-function RedBlackTree(selection) {
+import { view } from './visUtils.js'
+
+export function RedBlackTree() {
   this.root = NIL;
 }
 
@@ -139,7 +141,7 @@ RedBlackTree.prototype.insertRebalance = function(z) {
   var snapshots = [view(this)];
   while (z.parent.color == "red") {
     if (z.parent.isLeftChild) {
-      var y = z.parent.parent.rightChild;
+      let y = z.parent.parent.rightChild;
       if (y.color == "red") {
         z.parent.color = "black";
         z.parent.parent.rightChild.color = "black";
@@ -156,7 +158,7 @@ RedBlackTree.prototype.insertRebalance = function(z) {
         this.rightRotate(z.parent.parent);
       }
     } else {
-      var y = z.parent.parent.leftChild;
+      let y = z.parent.parent.leftChild;
       if (y.color == "red") {
         z.parent.color = "black";
         z.parent.parent.leftChild.color = "black";
@@ -184,7 +186,7 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
   var snapshots = [view(this)];
   while (x != this.root && x.color == "black") {
     if (x.isLeftChild) {
-      var w = x.parent.rightChild;
+      let w = x.parent.rightChild;
       if (w.color == "red") {
         w.color = "black";
         x.parent.color = "red";
@@ -212,7 +214,7 @@ RedBlackTree.prototype.deleteRebalance = function(x) {
         snapshots.push(view(this));
       }
     } else {
-      var w = x.parent.leftChild;
+      let w = x.parent.leftChild;
       if (w.color == "red") {
         w.color = "black";
         x.parent.color = "red";

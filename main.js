@@ -1,6 +1,10 @@
-function makeTree(type, w, h, canvas) {
+import *  as d3 from 'd3'
+import { RADIUS, TEXT_OFFSET, VERT_OFFSET, TRANSITION_SPEED } from './constants.js'
+import { BST } from './bst.js'
+import { RedBlackTree } from './rb.js'
 
-  var vistree = d3.layout.tree().size([w,  h]);
+export function makeTree(type, w, h, canvas) {
+
   var svg;
 
   function update(source) {
